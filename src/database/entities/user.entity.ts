@@ -1,9 +1,9 @@
-import { Column, Entity, OneToMany } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 
-import { Role } from '../../common/guards/enums/role.enum';
-import { EAccountTypes } from '../../modules/users/enums/account-type.enum';
-// import { AdvertisementEntity } from './advertisement.entity';
+import { AccountTypesEntity } from './account_types.entity';
+import { ListingsEntity } from './listings.entity';
 import { BaseEntity } from './models/base.entity';
+import { RolesEntity } from './roles.entity';
 
 @Entity('user')
 export class UserEntity extends BaseEntity {
@@ -16,18 +16,24 @@ export class UserEntity extends BaseEntity {
   @Column({ type: 'text', select: false })
   password: string;
 
-  @Column({ type: 'enum', enum: Role, default: Role.User })
-  roles: Role;
-
-  @Column({ type: 'enum', enum: EAccountTypes, default: EAccountTypes.BASIC })
-  accountType: EAccountTypes;
-
   @Column({ type: 'boolean', default: false })
   blocked: boolean;
 
   @Column({ type: 'text', nullable: true })
   image?: string;
 
-  // @OneToMany(() => AdvertisementEntity, (entity) => entity.user)
-  // advertisement?: AdvertisementEntity[];
+  @OneToMany(() => ListingsEntity, (entity) => entity.user)
+  listings?: ListingsEntity[];
+
+  @Column()
+  role_id: string;
+  @ManyToOne(() => RolesEntity, (entity) => entity.user)
+  @JoinColumn({ name: 'role_id' })
+  roles?: RolesEntity;
+
+  @Column()
+  account_type_id: string;
+  @ManyToOne(() => AccountTypesEntity, (entity) => entity.user)
+  @JoinColumn({ name: 'account_type_id' })
+  account_type?: AccountTypesEntity;
 }

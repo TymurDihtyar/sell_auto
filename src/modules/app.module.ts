@@ -5,6 +5,7 @@ import configuration from '../configs/config';
 import { AuthModule } from './auth/auth.module';
 import { HealthModule } from './health/health.module';
 import { PostgresModule } from './postgres/postgres.module';
+import { RepositoryModule } from './repository/repository.module';
 import { UserModule } from './users/user.module';
 
 @Module({
@@ -17,6 +18,7 @@ import { UserModule } from './users/user.module';
     HealthModule,
     AuthModule,
     PostgresModule,
+    RepositoryModule,
   ],
 })
 export class AppModule {}
