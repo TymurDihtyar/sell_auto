@@ -29,8 +29,6 @@ export type RedisConfig = {
 export type JWTConfig = {
   accessTokenSecret: string;
   accessTokenExpiration: number;
-  refreshTokenSecret: string;
-  refreshTokenExpiration: number;
 };
 
 export type BankConfig = {

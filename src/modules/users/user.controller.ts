@@ -1,16 +1,25 @@
 import {
   Body,
   Controller,
-  Delete,
   Get,
   Param,
-  Patch,
   Post,
+  Put,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 
-import { CreateUserDto } from './dto/request/create-user.dto';
-import { UpdateUserDto } from './dto/request/update-user.dto';
+import { CurrentUser } from '../auth/decorators/current-user.decorator';
+import { IUserData } from '../auth/interfaces/user-data.interface';
+import { UpdateUserRequestDto } from './dto/request/update-user.req.dto';
 import { UserResponseDto } from './dto/resonse/user.res.dto';
 import { UserService } from './services/user.service';
 
@@ -18,30 +27,47 @@ import { UserService } from './services/user.service';
 @ApiTags('User')
 @Controller('user')
 export class UserController {
-  constructor(private readonly usersService: UserService) {}
+  constructor(private readonly userService: UserService) {}
 
-  @Post()
-  create(@Body() createUserDto: CreateUserDto): UserResponseDto {
-    return this.usersService.create(createUserDto) as any;
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get information about me' })
+  @Get('me')
+  public async findMe(
+    @CurrentUser() userData: IUserData,
+  ): Promise<UserResponseDto> {
+    return await this.userService.findMe(userData);
   }
 
-  @Get()
-  findAll() {
-    return this.usersService.findAll();
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Change information about me' })
+  @Put('me')
+  public async updateMe(
+    @CurrentUser() userData: IUserData,
+    @Body() dto: UpdateUserRequestDto,
+  ): Promise<UserResponseDto> {
+    return await this.userService.updateMe(userData, dto);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
-  }
+  // @SkipAuth()
+  // @ApiOperation({ summary: 'Get user about me' })
+  // @Get(':id')
+  // public async findOne(@Param('id') id: string): Promise<string> {
+  //   return await this.userService.findOne(+id);
+  // }
+  // @SkipAuth()
+  // @ApiBearerAuth()
+  // @ApiOperation({ summary: 'Upload photo' })
+  // @Post('me/avatar')
+  // @UseInterceptors(FileInterceptor('file'))
+  // @ApiConsumes('multipart/form-data')
+  // @ApiBody({
+  //   description: 'user avatar',
+  //   type: FileUploadDto,
+  // })
+  // public async uploadAvatar(
+  //   @UploadedFile(new FileSizeValidationPipe()) file: Express.Multer.File,
+  //   @CurrentUser() userData: IUserData,
+  // ): Promise<UserResponseDto> {
+  //   return await this.userService.uploadAvatar(file, userData);
+  // }
 }
