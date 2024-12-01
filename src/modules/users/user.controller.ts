@@ -2,7 +2,7 @@ import {
   Body,
   Controller,
   Get,
-  Param,
+  NestInterceptor,
   Post,
   Put,
   UploadedFile,
@@ -19,6 +19,8 @@ import {
 
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { IUserData } from '../auth/interfaces/user-data.interface';
+import { FileUploadDto } from '../aws/dto/file-upload.dto';
+import { FileSizeValidationPipe } from '../aws/validator/fileSizeValidationPipe';
 import { UpdateUserRequestDto } from './dto/request/update-user.req.dto';
 import { UserResponseDto } from './dto/resonse/user.res.dto';
 import { UserService } from './services/user.service';
@@ -48,26 +50,19 @@ export class UserController {
     return await this.userService.updateMe(userData, dto);
   }
 
-  // @SkipAuth()
-  // @ApiOperation({ summary: 'Get user about me' })
-  // @Get(':id')
-  // public async findOne(@Param('id') id: string): Promise<string> {
-  //   return await this.userService.findOne(+id);
-  // }
-  // @SkipAuth()
-  // @ApiBearerAuth()
-  // @ApiOperation({ summary: 'Upload photo' })
-  // @Post('me/avatar')
-  // @UseInterceptors(FileInterceptor('file'))
-  // @ApiConsumes('multipart/form-data')
-  // @ApiBody({
-  //   description: 'user avatar',
-  //   type: FileUploadDto,
-  // })
-  // public async uploadAvatar(
-  //   @UploadedFile(new FileSizeValidationPipe()) file: Express.Multer.File,
-  //   @CurrentUser() userData: IUserData,
-  // ): Promise<UserResponseDto> {
-  //   return await this.userService.uploadAvatar(file, userData);
-  // }
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Upload photo' })
+  @Post('me/avatar')
+  @UseInterceptors(FileInterceptor('avatar') as unknown as NestInterceptor)
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: 'user avatar',
+    type: FileUploadDto,
+  })
+  public async uploadAvatar(
+    @CurrentUser() userData: IUserData,
+    @UploadedFile(new FileSizeValidationPipe()) file: Express.Multer.File,
+  ): Promise<UserResponseDto> {
+    return await this.userService.uploadAvatar(file, userData);
+  }
 }

@@ -1,8 +1,13 @@
-import { PickType } from '@nestjs/swagger';
+import { Transform, Type } from 'class-transformer';
+import { IsOptional, IsString, Length } from 'class-validator';
 
-import { BaseUserRequestDto } from './base-user.req.dto';
+import { TransformHelper } from '../../../../common/helpers/transform.helper';
 
-export class UpdateUserRequestDto extends PickType(BaseUserRequestDto, [
-  'name',
-  'image',
-]) {}
+export class UpdateUserRequestDto {
+  @IsOptional()
+  @IsString()
+  @Length(3, 50)
+  @Transform(TransformHelper.trim)
+  @Type(() => String)
+  name?: string;
+}

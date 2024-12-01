@@ -16,7 +16,7 @@ export class BaseUserRequestDto {
 
   @ApiProperty({ example: 'test@example.com' })
   @IsString()
-  @Length(0, 300)
+  @Length(1, 300)
   @Matches(/^[^\s@]+@([^\s@.,]+\.)+[^\s@.,]{2,}$/, {
     message: 'Invalid email format',
   })
@@ -24,7 +24,7 @@ export class BaseUserRequestDto {
 
   @ApiProperty({ example: '123qwe!@#QWE' })
   @IsString()
-  @Length(0, 300)
+  @Length(1, 300)
   @Matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%_*#?&])[A-Za-z\d@$_!%*#?&]{8,}$/, {
     message:
       'Password must be at least 8 characters long and include letters, numbers, and special characters',

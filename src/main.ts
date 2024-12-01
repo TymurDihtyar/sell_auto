@@ -3,9 +3,13 @@ import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
+import { Role } from './common/guards/enums/role.enum';
 import { GlobalExceptionFilter } from './common/http/http-exception.filter';
 import { AppConfig, ConfigType } from './configs/config.type';
 import { AppModule } from './modules/app.module';
+import { SignUpAdminRequestDto } from './modules/auth/dto/request/sign-up-admin.req.dto';
+import { AuthService } from './modules/auth/services/auth.service';
+import { EAccountTypes } from './modules/users/enums/account-type.enum';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -39,6 +43,20 @@ async function bootstrap() {
       transform: true,
     }),
   );
+
+  const appAdminCreate = app.get(AuthService);
+  const adminData: SignUpAdminRequestDto = {
+    name: 'admin',
+    email: 'admin@example.com',
+    password: '123qwe!@#QWE',
+    role: Role.Admin,
+    account_type: EAccountTypes.PREMIUM,
+  } as SignUpAdminRequestDto;
+  const Admin = await appAdminCreate.isAdminAllreadyExist(adminData.email);
+  if (!Admin) {
+    await appAdminCreate.createAdmin(adminData);
+    Logger.log('Admin user created successfully.');
+  }
 
   const configService = app.get(ConfigService<ConfigType>);
   const appConfig = configService.get<AppConfig>('app');

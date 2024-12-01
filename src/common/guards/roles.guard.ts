@@ -6,7 +6,6 @@
 // } from '@nestjs/common';
 // import { Reflector } from '@nestjs/core';
 //
-// import { TokenType } from '../../modules/auth/enums/token-type.enum';
 // import { TokenService } from '../../modules/auth/services/token.service';
 // import { UserRepository } from '../../modules/repository/services/user.repository';
 // import { ROLES_KEY } from '../decorators/roles.decorator';
@@ -34,10 +33,7 @@
 //     if (!accessToken) {
 //       throw new UnauthorizedException();
 //     }
-//     const payload = await this.tokenService.verifyToken(
-//       accessToken,
-//       TokenType.ACCESS,
-//     );
+//     const payload = await this.tokenService.verifyToken(accessToken);
 //     if (!payload) {
 //       throw new UnauthorizedException();
 //     }
@@ -48,6 +44,6 @@
 //     if (!user) {
 //       throw new UnauthorizedException();
 //     }
-//     return roles.some((role) => user.roles?.includes(role));
+//     return roles.some((role) => user.role?.includes(role));
 //   }
 // }
