@@ -3,7 +3,6 @@ export type ConfigType = {
   postgres: PostgresConfig;
   redis: RedisConfig;
   jwt: JWTConfig;
-  bank: BankConfig;
   aws: AWSConfig;
 };
 
@@ -29,10 +28,6 @@ export type RedisConfig = {
 export type JWTConfig = {
   accessTokenSecret: string;
   accessTokenExpiration: number;
-};
-
-export type BankConfig = {
-  bankURL: string;
 };
 
 export type AWSConfig = {

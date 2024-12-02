@@ -14,7 +14,6 @@ import { ImagesRepository } from '../../repository/services/images.repository';
 import { ListingsRepository } from '../../repository/services/listins.repository';
 import { UserRepository } from '../../repository/services/user.repository';
 import { CreateListingRequestDto } from '../dto/request/create-listig.request.dto';
-// import { ViewRepository } from '../../repository/services/view.repository';
 import { ListingListRequestDto } from '../dto/request/listig-list.request.dto';
 import { UpdateListingRequestDto } from '../dto/request/update-listig.request.dto';
 import { ListingResponceDto } from '../dto/response/listing.response.dto';
@@ -28,22 +27,10 @@ export class ListingsService {
     private readonly listingsRepository: ListingsRepository,
     private readonly currencyRepository: CurrencyRepository,
     private userRepository: UserRepository,
-    // private viewRepository: ViewRepository,
     private imagesRepository: ImagesRepository,
     private awsService: AwsService,
   ) {}
   public async create(dto: CreateListingRequestDto, userData: IUserData) {
-    // const EUR = await this.currencyRepository.findOneBy({ ccy: 'EUR' });
-    // const USD = await this.currencyRepository.findOneBy({ ccy: 'USD' });
-    // let PriceUSD: number;
-    // if (dto.currency === 'UAH') {
-    //   PriceUSD = dto.price / USD.sale;
-    // } else if (dto.currency === 'EUR') {
-    //   PriceUSD = (dto.price * USD.buy) / EUR.sale;
-    // } else {
-    //   PriceUSD = +dto.price;
-    // }
-
     const newListingsEntity = await this.listingsRepository.save(
       this.listingsRepository.create({
         ...dto,
@@ -72,22 +59,6 @@ export class ListingsService {
     if (!entity) {
       throw new UnprocessableEntityException('Listing not found');
     }
-
-    // await this.viewRepository.save({
-    //   listings_id: listingId,
-    // });
-    // const account = await this.userRepository.findOneBy({
-    //   id: userData.userId,
-    // });
-
-    // if (account.account_type === EAccountTypes.PREMIUM) {
-    //   const dayViews = await this.viewRepository.findViewsByDay(listingId);
-    //   const weekViews = await this.viewRepository.findViewsByWeek(listingId);
-    //   const monthViews = await this.viewRepository.findViewsByMonth(listingId);
-    //   // const averagePrise = await this.advertisementRepository.average('priceFunc' );
-    //   const averagePrise = await this.listingsRepository.averagePrice(entity);
-    // }
-    // const entityWithPrices = await this.calculatePrices(entity);
     return ListingsMapper.toResponseDto(entity);
   }
 

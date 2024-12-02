@@ -24,9 +24,6 @@ export default (): ConfigType => ({
     accessTokenExpiration:
       parseInt(process.env.AUTH_ACCESS_TOKEN_EXPIRATION) || 3600,
   },
-  bank: {
-    bankURL: process.env.BANK_URL,
-  },
   aws: {
     awsAccessKeyId: process.env.AWS_ACCESS_KEY_ID,
     awsSecretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,

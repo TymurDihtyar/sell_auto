@@ -74,7 +74,6 @@ export class ListingController {
     return await this.listingService.findMyListings(query, userData);
   }
 
-  // @SkipAuth()
   @ApiOperation({ summary: 'Get one Listing by id' })
   @Get(':listingId')
   @ApiBearerAuth()
