@@ -1,5 +1,56 @@
-AutoRia clone
+### Installation
 
+1. Clone the repository:
+
+   ```bash
+   git clone <https://github.com/TymurDihtyar/sell_auto.git>
+
+2. Navigate to the project directory:
+
+   ```bash
+   cd <sell_auto>
+
+3. Install the necessary dependencies:
+
+   ```bash
+   npm install
+
+4. Create a .env file in the root of your project with the following content:
+   ```code
+   	APP_PORT=3000
+	APP_HOST=0.0.0.0
+
+	POSTGRES_HOST=0.0.0.0
+	POSTGRES_PORT=5432
+	POSTGRES_USER=postgres
+	POSTGRES_PASSWORD=qzwxec918273
+	POSTGRES_DB=cars
+
+	REDIS_HOST=0.0.0.0
+	REDIS_PORT=6379
+	REDIS_PASSWORD=redispass
+
+	AUTH_ACCESS_TOKEN_SECRET=access_secret
+	AUTH_ACCESS_TOKEN_EXPIRATION=36000
+
+	AWS_ACCESS_KEY_ID=user
+	AWS_SECRET_ACCESS_KEY=password
+	AWS_S3_OBJECT_ACL=public-read
+	AWS_S3_BUCKET_PATH=http://localhost:7000/march-2024-nestjs
+	AWS_S3_BUCKET_NAME=avatar
+	AWS_S3_ENDPOINT=http://localhost:7000
+	AWS_S3_REGION=us-east-1
+4. Run docker:
+   ```bash
+   docker compose --env-file ./.env -f ./docker-compose-local.yaml up --build
+
+### Scripts
+1. **Run in development mode**: This command uses nodemon to watch for file changes and automatically restart the server.
+   ```bash
+   nest start --watch -e "node --env-file ./.env"
+
+
+AutoRia clone Task
 
 Уявляємо ситуацію:
 
@@ -51,6 +102,3 @@ Lanos - модель
 Наприклад якщо авто продається у Києві, то буде середня ціна авто по Києву.
 Якщо у Львівській області, то середня ціна буде по Львівській області
 	* середня ціна авто по цілій Україні
-
-Обов'язково рідмі файл, в якому описати як запускати, та що до чого.
-Обов'язково постман коллекцію з запитами. Обов'язково замокайте все, щоб можна було все перевірити.
