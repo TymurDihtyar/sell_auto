@@ -7,8 +7,10 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
+import { Roles } from '../../common/decorators/roles.decorator';
+import { Role } from '../../common/guards/enums/role.enum';
 import { SkipAuth } from '../auth/decorators/skip-auth.decorator';
 import { CreateUpdateModelRequestDto } from './dto/request/create-update-models.request.dto';
 import { ModelsResponseDto } from './dto/responce/models.response.dto';
@@ -20,7 +22,8 @@ import { ModelsService } from './services/models.service';
 export class ModelsController {
   constructor(private readonly modelsService: ModelsService) {}
 
-  @SkipAuth()
+  @Roles(Role.Admin, Role.Manager)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Admins and managers can create a model here' })
   @Post()
   public async create(
@@ -38,7 +41,8 @@ export class ModelsController {
     return await this.modelsService.findAllByBrandName(brandName);
   }
 
-  @SkipAuth()
+  @Roles(Role.Admin, Role.Manager)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Update a model' })
   @Put(':model')
   public async update(
@@ -48,7 +52,8 @@ export class ModelsController {
     return await this.modelsService.update(model, dto);
   }
 
-  @SkipAuth()
+  @Roles(Role.Admin, Role.Manager)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Delete a model' })
   @Delete(':model')
   public async remove(@Param('model') model: string) {
