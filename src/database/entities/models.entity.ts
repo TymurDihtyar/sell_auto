@@ -18,7 +18,7 @@ export class ModelsEntity {
 
   @Column()
   brand_id: string;
-  @ManyToOne(() => BrandsEntity, (entity) => entity.models)
+  @ManyToOne(() => BrandsEntity, (entity) => entity.models, { eager: true })
   @JoinColumn({ name: 'brand_id' })
   brands?: BrandsEntity;
 }

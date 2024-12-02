@@ -8,9 +8,11 @@ export class SignUpAdminRequestDto {
   @IsString()
   name: string;
 
+  @ApiProperty({ example: 'admin@example.com' })
   @IsString()
   email: string;
 
+  @ApiProperty({ example: '123qwe!@#QWE' })
   @IsString()
   password: string;
 

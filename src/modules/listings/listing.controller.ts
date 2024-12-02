@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  NestInterceptor,
   Param,
   Post,
   Put,
@@ -23,8 +24,8 @@ import {
 import { Roles } from '../../common/decorators/roles.decorator';
 import { BrandAndModelGuard } from '../../common/guards/brand-model.guard';
 import { Role } from '../../common/guards/enums/role.enum';
-import { BannedWordsGuards } from '../../common/guards/enums/word-control.guard';
 import { SellingLimitsGuard } from '../../common/guards/sell-limit.guard';
+import { BannedWordsGuards } from '../../common/guards/word-control.guard';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { SkipAuth } from '../auth/decorators/skip-auth.decorator';
 import { IUserData } from '../auth/interfaces/user-data.interface';
@@ -109,11 +110,11 @@ export class ListingController {
 
   @Post(':listingId/photos')
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Upload Listing photo' })
-  @UseInterceptors(FilesInterceptor('files') as any)
+  @ApiOperation({ summary: 'Upload Listing photos' })
+  @UseInterceptors(FilesInterceptor('files') as unknown as NestInterceptor)
   @ApiConsumes('multipart/form-data')
   @ApiBody({
-    description: 'advertisement photo',
+    description: 'listing photo',
     type: FilesUploadDto,
   })
   public async uploadPhotos(

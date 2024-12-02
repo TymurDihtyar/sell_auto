@@ -5,9 +5,9 @@ import {
   Injectable,
 } from '@nestjs/common';
 
-import { EStatus } from '../../../modules/listings/enums/status.enum';
-import { ListingsRepository } from '../../../modules/repository/services/listins.repository';
-import { badWordList } from '../constants/badWordList';
+import { EStatus } from '../../modules/listings/enums/status.enum';
+import { ListingsRepository } from '../../modules/repository/services/listins.repository';
+import { badWordList } from './constants/badWordList';
 
 @Injectable()
 export class BannedWordsGuards implements CanActivate {

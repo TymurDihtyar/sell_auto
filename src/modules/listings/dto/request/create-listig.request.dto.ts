@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsInt, IsString } from 'class-validator';
 
 import { ECurrency } from '../../enums/currency.enum';
+import { ERegion } from '../../enums/region.enum';
 
 export class CreateListingRequestDto {
   @IsString()
@@ -25,4 +26,8 @@ export class CreateListingRequestDto {
   @ApiProperty({ enum: ECurrency })
   @IsString()
   currency: ECurrency;
+
+  @ApiProperty({ enum: ERegion })
+  @IsString()
+  region: ERegion;
 }

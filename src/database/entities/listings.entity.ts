@@ -1,11 +1,11 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 
 import { ECurrency } from '../../modules/listings/enums/currency.enum';
+import { ERegion } from '../../modules/listings/enums/region.enum';
 import { EStatus } from '../../modules/listings/enums/status.enum';
 import { ListingImagesEntity } from './listing_images.entity';
 import { ListingsViewEntity } from './listing_views.entity';
 import { BaseEntity } from './models/base.entity';
-import { RegionEntity } from './region.entity';
 import { UserEntity } from './user.entity';
 
 @Entity('listings')
@@ -34,6 +34,9 @@ export class ListingsEntity extends BaseEntity {
   @Column({ type: 'enum', enum: ECurrency, default: ECurrency.UAH })
   currency: ECurrency;
 
+  @Column({ type: 'enum', enum: ERegion, default: ERegion.CENTRAL })
+  region: ERegion;
+
   @Column()
   user_id: string;
   @ManyToOne(() => UserEntity, (entity) => entity.listings)
@@ -45,10 +48,4 @@ export class ListingsEntity extends BaseEntity {
 
   @OneToMany(() => ListingImagesEntity, (entity) => entity.listings)
   image_url?: ListingImagesEntity[];
-
-  @Column()
-  region_id: string;
-  @ManyToOne(() => RegionEntity, (entity) => entity.listings)
-  @JoinColumn({ name: 'region_id' })
-  region?: RegionEntity;
 }

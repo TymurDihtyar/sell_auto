@@ -15,7 +15,6 @@ export class ListingsRepository extends Repository<ListingsEntity> {
   ): Promise<[ListingsEntity[], number]> {
     const qb = this.createQueryBuilder('listings');
     qb.addOrderBy('listings.created', 'DESC');
-
     qb.leftJoinAndSelect('listings.user', 'user');
     qb.take(query.limit);
     qb.skip(query.offset);
