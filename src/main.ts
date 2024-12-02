@@ -6,9 +6,9 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { Role } from './common/guards/enums/role.enum';
 import { GlobalExceptionFilter } from './common/http/http-exception.filter';
 import { AppConfig, ConfigType } from './configs/config.type';
+import { SignUpAdminRequestDto } from './modules/admin/dto/request/sign-up-admin.req.dto';
+import { AdminService } from './modules/admin/service/admin.service';
 import { AppModule } from './modules/app.module';
-import { SignUpAdminRequestDto } from './modules/auth/dto/request/sign-up-admin.req.dto';
-import { AuthService } from './modules/auth/services/auth.service';
 import { EAccountTypes } from './modules/users/enums/account-type.enum';
 
 async function bootstrap() {
@@ -44,7 +44,7 @@ async function bootstrap() {
     }),
   );
 
-  const appAdminCreate = app.get(AuthService);
+  const appAdminCreate = app.get(AdminService);
   const adminData: SignUpAdminRequestDto = {
     name: 'admin',
     email: 'admin@example.com',

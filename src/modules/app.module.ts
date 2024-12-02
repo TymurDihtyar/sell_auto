@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
 import configuration from '../configs/config';
+import { AdminModule } from './admin/admin.module';
 import { AuthModule } from './auth/auth.module';
 import { AwsModule } from './aws/aws.module';
 import { BrandModule } from './brand/brand.module';
@@ -19,6 +20,7 @@ import { UserModule } from './users/user.module';
       isGlobal: true,
     }),
     HealthModule,
+    AdminModule,
     AuthModule,
     UserModule,
     ListingModule,
